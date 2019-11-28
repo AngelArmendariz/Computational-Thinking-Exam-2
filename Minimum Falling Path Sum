@@ -1,0 +1,28 @@
+Minimum Falling Path Sum
+1.The problem gives a square array of integers, find the path with the lowest sum going from the top row to the bottom row. First thing to do is make a new array of the same size as the original, keep the first row the same, to fill in the rest of the array you look at the original second row and on each cell look at the number above on the new array and to its left and right(+1) and choose the minimum number and add it to the current cell number and add that new number to the same spot on the new array. Keep doing the same thing for every cell until you reach the end and at the end return the minimum number at the last row and that is the minimum sum path. 
+(this should work from either a top to bottom or bottom to top approach)
+
+2.We will use a new 2D array where the solutions will be store in, with the new answers that will be used to solve the next set of answers
+Time Complexity: O(N^2), where N is the length of A.
+Space Complexity: O(1) in additional space complexity.
+
+3.I traced the problem by hand to test the solution multiple times.
+4.
+    public int minFallingPathSum(int[][] A) {
+        int N = A.length;
+        for (int r = N-2; r >= 0; --r) {
+            for (int c = 0; c < N; ++c) {
+                // best = min(A[r+1][c-1], A[r+1][c], A[r+1][c+1])
+                int best = A[r+1][c];
+                if (c > 0)
+                    best = Math.min(best, A[r+1][c-1]);
+                if (c+1 < N)
+                    best = Math.min(best, A[r+1][c+1]);
+                A[r][c] += best;
+            }
+        }
+        int ans = Integer.MAX_VALUE;
+        for (int x: A[0])
+            ans = Math.min(ans, x);
+        return ans;
+    }
